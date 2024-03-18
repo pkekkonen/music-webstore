@@ -1,5 +1,5 @@
 export default [
-    [
+
         {
           id: 1,
           artist: "The Band",
@@ -44,7 +44,6 @@ export default [
           release_year: 1971,
           price: 13.25,
           genres: ["Rock", "Hard Rock"]
-        }
-      ]
+        },
       
 ];

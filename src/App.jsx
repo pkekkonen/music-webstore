@@ -1,11 +1,5 @@
-import "./App.css";
-import {Store} from "./components/Store";
-function App() {
-  return (
-    <>
-      <Store></Store>
-    </>
-  );
-}
+import { Store } from './components/Store.jsx'
 
-export default App;
+export default function App() {
+  return <Store/>
+}

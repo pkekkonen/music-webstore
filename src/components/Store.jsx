@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import Header from "./Header";
 import Body from "./Body";
 import dummyUsers from "../../dummy-data/users";
+import dummyProducts from "../../dummy-data/products";
 
 const UserContext = createContext();
 const ProductContext = createContext();
@@ -19,7 +20,7 @@ function Store() {
   }
 
   function fetchProducts() {
-    setProducts([]);
+    setProducts(dummyProducts);
   }
   function setGuestUser() {
     setUser(dummyUsers[0]);
