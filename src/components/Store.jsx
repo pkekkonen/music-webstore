@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import Header from "./Header";
 import Body from "./Body";
 import dummyUsers from "../../dummy-data/users";
+import dummyProducts from "../../dummy-data/products";
 
 const UserContext = createContext();
 const ProductContext = createContext();
@@ -11,21 +12,38 @@ const SearchContext = createContext();
 function Store() {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState({});
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
 
-  function onSearch(text){
-    setSearch(text)
+  function onSearch(text) {
+    setSearch(text);
   }
 
+  function addToCart(product) {
+    if (cart.filter((p) => p.id == product.id).length) {
+      setCart(
+        cart.map((p) => {
+          if (p.id == product.id) {
+            return { ...p, quantity: p.quantity + 1 };
+          }
+          return p;
+        })
+      );
+    } else {
+      setCart([
+        ...cart,
+        { id: product.id, product_title: product.title, quantity: 1 },
+      ]);
+    }
+  }
   function fetchProducts() {
-    setProducts([]);
+    setProducts(dummyProducts);
   }
   function setGuestUser() {
     setUser(dummyUsers[0]);
   }
   function updateCart() {
-    setCart({});
+    
   }
   useEffect(() => {
     fetchProducts();
@@ -34,10 +52,14 @@ function Store() {
   useEffect(() => {
     updateCart();
   }, [user]);
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
   return (
     <>
       <UserContext.Provider value={{ user }}>
-        <CartContext.Provider value={{ cart }}>
+        <CartContext.Provider value={{ cart, addToCart }}>
           <ProductContext.Provider value={{ products }}>
             <SearchContext.Provider value={{ search, onSearch }}>
               <Header />
@@ -49,4 +71,4 @@ function Store() {
     </>
   );
 }
-export {Store, UserContext, CartContext,ProductContext,SearchContext};
+export { Store, UserContext, CartContext, ProductContext, SearchContext };
