@@ -1,5 +1,5 @@
-function Header(){
+function Body(){
     return(
         <></>
     )
-} export default Header
+} export default Body
