@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import Header from "./Header";
 import Body from "./Body"
 import dummyUsers from "../../dummy-data/users";
+import dummyProducts from "../../dummy-data/products";
 
 const UserContext = createContext();
 const ProductContext = createContext();
@@ -13,7 +14,7 @@ function Store() {
   const [cart, setCart] = useState({});
 
   function fetchProducts() {
-    setProducts([]);
+    setProducts(dummyProducts);
   }
   function setGuestUser() {
     setUser(dummyUsers[0]);
@@ -28,17 +29,18 @@ function Store() {
   useEffect(()=>{
     updateCart()
   },[user])
+
   return (
     <>
-      <UserContext value={{ user }}>
-        <CartContext value={{ cart }}>
-          <ProductContext value={{ products }}>
+      <UserContext.Provider value={{ user }}>
+        <CartContext.Provider value={{ cart }}>
+          <ProductContext.Provider value={{ products }}>
             <Header />
             <Body />
-          </ProductContext>
-        </CartContext>
-      </UserContext>
+          </ProductContext.Provider>
+        </CartContext.Provider>
+      </UserContext.Provider>
     </>
   );
 }
-export default Store;
+export  {Store, ProductContext};
