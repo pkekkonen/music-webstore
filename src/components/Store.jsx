@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Header from "./Header";
+import Body from "./Body"
 import dummyUsers from "../../dummy-data/users";
 
 const UserContext = createContext();
