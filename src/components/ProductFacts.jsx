@@ -4,7 +4,7 @@ function ProductFacts({ product }) {
     return (
       <>
         <div>
-          <h3>FACTS</h3>
+          <h3>DETAILS</h3>
           <div>
             <strong>Artist: </strong>
             <strong>Label:</strong>

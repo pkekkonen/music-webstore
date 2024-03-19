@@ -5,8 +5,8 @@ import ViewProduct from "./ViewProduct";
 function Body() {
   return (
     <>
-     <ProductBrowse/>
       <Routes>
+        <Route path="/" element={<ProductBrowse />} />
         <Route path="/products/:id" element={<ViewProduct />} />
       </Routes>
     </>
