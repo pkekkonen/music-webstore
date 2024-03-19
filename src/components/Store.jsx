@@ -9,24 +9,24 @@ const UserContext = createContext();
 const ProductContext = createContext();
 const CartContext = createContext();
 const SearchContext = createContext();
-const FilterContext = createContext()
+const FilterContext = createContext();
 
 function Store() {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState({});
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
-  const [filters, setFilters]= useState([]);
-  const navigate = useNavigate()
+  const [filters, setFilters] = useState([]);
+  const navigate = useNavigate();
 
-function createUser(user){
-  console.log(user)
-  navigate("/")
-}
+  function createUser(user) {
+    console.log(user);
+    navigate("/");
+  }
 
-
-function onSetFilters(newFilters)
-{setFilters(newFilters)}
+  function onSetFilters(newFilters) {
+    setFilters(newFilters);
+  }
 
   function onSearch(text) {
     setSearch(text);
@@ -48,15 +48,20 @@ function onSetFilters(newFilters)
       ]);
     }
   }
+  function removeFromCart(id) {
+    setCart(cart.filter((p) => p.id !== id));
+  }
+  function checkoutCart() {
+    console.log(cart);
+    navigate("/");
+  }
   function fetchProducts() {
     setProducts(dummyProducts);
   }
   function setGuestUser() {
     setUser(dummyUsers[0]);
   }
-  function updateCart() {
-    
-  }
+  function updateCart() {}
   useEffect(() => {
     fetchProducts();
     setGuestUser();
@@ -71,12 +76,14 @@ function onSetFilters(newFilters)
   return (
     <>
       <UserContext.Provider value={{ user, createUser }}>
-        <CartContext.Provider value={{ cart, addToCart }}>
+        <CartContext.Provider
+          value={{ cart, addToCart, removeFromCart, checkoutCart }}
+        >
           <ProductContext.Provider value={{ products }}>
             <SearchContext.Provider value={{ search, onSearch }}>
-              <FilterContext.Provider value={{filters,onSetFilters}}>
-              <Header />
-              <Body />
+              <FilterContext.Provider value={{ filters, onSetFilters }}>
+                <Header />
+                <Body />
               </FilterContext.Provider>
             </SearchContext.Provider>
           </ProductContext.Provider>
