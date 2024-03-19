@@ -10,6 +10,8 @@ const navigate = useNavigate()
       <div>
         <button onClick={onSignOut}>Sign out</button>
         <button onClick={()=>{navigate("/signup")}}>Sign Up</button>
+        <button onClick={()=>{navigate("/signin")}}>Sign In</button>
+
         <Link to="/cart">
           <div>cart</div>
         </Link>
