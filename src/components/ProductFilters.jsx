@@ -41,28 +41,28 @@ function ProductFilters() {
           <div>
             <strong>Artist</strong>
             {[...artists].map((a) => (
-              <>
+              <div key={a}>
                 <div>{a}</div>
-                <input key={a} type="checkbox" title={a} name={a}></input>
-              </>
+                <input type="checkbox" title={a} name={a}></input>
+              </div>
             ))}
           </div>
           <div>
             <strong>Genre</strong>
             {[...genres].map((g) => (
-              <>
+              <div key={g}>
                 <div>{g}</div>
-                <input key={g} type="checkbox" title={g} name={g}></input>
-              </>
+                <input type="checkbox" title={g} name={g}></input>
+              </div>
             ))}
           </div>
           <div>
             <strong>Record Company</strong>
             {[...companies].map((c) => (
-              <>
+              <div key={c}>
                 <div>{c}</div>
-                <input key={c} type="checkbox" title={c} name={c}></input>
-              </>
+                <input type="checkbox" title={c} name={c}></input>
+              </div>
             ))}
           </div>
         </div>

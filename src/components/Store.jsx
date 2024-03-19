@@ -3,6 +3,7 @@ import Header from "./Header";
 import Body from "./Body";
 import dummyUsers from "../../dummy-data/users";
 import dummyProducts from "../../dummy-data/products";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 const ProductContext = createContext();
@@ -16,6 +17,13 @@ function Store() {
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
   const [filters, setFilters]= useState([]);
+  const navigate = useNavigate()
+
+function createUser(user){
+  console.log(user)
+  navigate("/")
+}
+
 
 function onSetFilters(newFilters)
 {setFilters(newFilters)}
@@ -62,7 +70,7 @@ function onSetFilters(newFilters)
   }, [cart]);
   return (
     <>
-      <UserContext.Provider value={{ user }}>
+      <UserContext.Provider value={{ user, createUser }}>
         <CartContext.Provider value={{ cart, addToCart }}>
           <ProductContext.Provider value={{ products }}>
             <SearchContext.Provider value={{ search, onSearch }}>
