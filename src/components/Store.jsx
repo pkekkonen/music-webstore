@@ -13,15 +13,32 @@ const FilterContext = createContext()
 function Store() {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState({});
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
   const [filters, setFilters]= useState([]);
 
 function onSetFilters(newFilters)
 {setFilters(newFilters)}
 
-  function onSearch(text){
-    setSearch(text)
+  function onSearch(text) {
+    setSearch(text);
+  }
+  function addToCart(product) {
+    if (cart.filter((p) => p.id == product.id).length) {
+      setCart(
+        cart.map((p) => {
+          if (p.id == product.id) {
+            return { ...p, quantity: p.quantity + 1 };
+          }
+          return p;
+        })
+      );
+    } else {
+      setCart([
+        ...cart,
+        { id: product.id, product_title: product.title, quantity: 1 },
+      ]);
+    }
   }
   function fetchProducts() {
     setProducts(dummyProducts);
@@ -30,7 +47,7 @@ function onSetFilters(newFilters)
     setUser(dummyUsers[0]);
   }
   function updateCart() {
-    setCart({});
+    
   }
   useEffect(() => {
     fetchProducts();
@@ -39,10 +56,14 @@ function onSetFilters(newFilters)
   useEffect(() => {
     updateCart();
   }, [user]);
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
   return (
     <>
       <UserContext.Provider value={{ user }}>
-        <CartContext.Provider value={{ cart }}>
+        <CartContext.Provider value={{ cart, addToCart }}>
           <ProductContext.Provider value={{ products }}>
             <SearchContext.Provider value={{ search, onSearch }}>
               <FilterContext.Provider value={{filters,onSetFilters}}>
@@ -56,4 +77,4 @@ function onSetFilters(newFilters)
     </>
   );
 }
-export {Store, UserContext, CartContext,ProductContext,SearchContext};
+export { Store, UserContext, CartContext, ProductContext, SearchContext };

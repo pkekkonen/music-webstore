@@ -1,3 +1,10 @@
+/* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
+
 export default function ProductListItem({ product }) {
-  return <>{product.title}</>;
+  return (
+    <>
+      <Link to={`/products/${product.id}`}>{product.title}</Link>
+    </>
+  );
 }
