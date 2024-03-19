@@ -8,17 +8,21 @@ const UserContext = createContext();
 const ProductContext = createContext();
 const CartContext = createContext();
 const SearchContext = createContext();
+const FilterContext = createContext()
 
 function Store() {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState({});
   const [cart, setCart] = useState({});
   const [search, setSearch] = useState("");
+  const [filters, setFilters]= useState([]);
+
+function onSetFilters(newFilters)
+{setFilters(newFilters)}
 
   function onSearch(text){
     setSearch(text)
   }
-
   function fetchProducts() {
     setProducts(dummyProducts);
   }
@@ -41,8 +45,10 @@ function Store() {
         <CartContext.Provider value={{ cart }}>
           <ProductContext.Provider value={{ products }}>
             <SearchContext.Provider value={{ search, onSearch }}>
+              <FilterContext.Provider value={{filters,onSetFilters}}>
               <Header />
               <Body />
+              </FilterContext.Provider>
             </SearchContext.Provider>
           </ProductContext.Provider>
         </CartContext.Provider>

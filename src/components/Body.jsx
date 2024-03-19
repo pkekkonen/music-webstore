@@ -1,10 +1,10 @@
-import BrowseBody from "./BrowseBody";
+import ProductBrowse from "./ProductBrowse";
 
 function Body() {
 
     return (
     <>
-      <BrowseBody></BrowseBody>
+     <ProductBrowse/>
     </>
   );
 }
