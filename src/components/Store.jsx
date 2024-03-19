@@ -19,8 +19,12 @@ function Store() {
   const [filters, setFilters] = useState([]);
   const navigate = useNavigate();
 
-  function createUser(user) {
-    console.log(user);
+  function createUser(u){
+  console.log(u)
+  navigate("/")
+}
+function signInUser(u) {
+    console.log(u);
     navigate("/");
   }
 
@@ -75,7 +79,7 @@ function Store() {
   }, [cart]);
   return (
     <>
-      <UserContext.Provider value={{ user, createUser }}>
+      <UserContext.Provider value={{ user, createUser,signInUser }}>
         <CartContext.Provider
           value={{ cart, addToCart, removeFromCart, checkoutCart }}
         >
