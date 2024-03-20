@@ -9,7 +9,7 @@ function HeaderSearch() {
     onSearch(search);
   }
   return (
-    <>
+    <div>
       <input
         name="search"
         placeholder="Search..."
@@ -17,7 +17,7 @@ function HeaderSearch() {
         onChange={(e) => setSearch(e.target.value)}
       />
       <button onClick={onSearchClick}>Search</button>
-    </>
+    </div>
   );
 }
 export default HeaderSearch;

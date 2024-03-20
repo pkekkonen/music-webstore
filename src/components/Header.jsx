@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import HeaderIcons from "./HeaderIcons";
 import HeaderSearch from "./HeaderSearch";
-
+import "../styles/Header.css";
 function Header() {
   return (
-    <><Link to="/">
-    <div>Bobs Bangers</div>
-    </Link>
-      <div>
+    <div className="header">
+   
+        <Link to="/">
+          <div>Bobs Bangers</div>
+        </Link>
         <HeaderSearch />
-        <HeaderIcons/>
-      </div>
-    </>
+        <HeaderIcons />
+
+    </div>
   );
 }
 export default Header;
