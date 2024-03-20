@@ -19,13 +19,55 @@ function Store() {
   const [filters, setFilters] = useState([]);
   const navigate = useNavigate();
 
-  function createUser(u){
-  console.log(u)
-  navigate("/")
-}
-function signInUser(u) {
-    console.log(u);
-    navigate("/");
+  function createUser(user) {
+    fetch("http://localhost:4000/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({ ...user, role: "USER" }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 400) {
+            console.log("Email already taken");
+            throw new Error("Unauthorized"); // Throw error for unauthorized access
+          } else {
+            throw new Error("Network response was not ok");
+          }
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        signInUser(user);
+        navigate("/");
+      });
+  }
+  function signInUser(user) {
+    fetch("http://localhost:4000/auth/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.log(" Wrong password or email");
+            throw new Error("Unauthorized"); // Throw error for unauthorized access
+          } else {
+            throw new Error("Network response was not ok");
+          }
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        localStorage.setItem("user", JSON.stringify(responseData));
+        setUser(responseData);
+        navigate("/");
+      });
   }
 
   function onSetFilters(newFilters) {
@@ -33,6 +75,7 @@ function signInUser(u) {
   }
 
   function onSearch(text) {
+    console.log(user)
     setSearch(text);
   }
   function addToCart(product) {
@@ -64,11 +107,17 @@ function signInUser(u) {
   }
   function setGuestUser() {
     setUser(dummyUsers[0]);
+    localStorage.removeItem("user");
   }
   function updateCart() {}
   useEffect(() => {
     fetchProducts();
-    setGuestUser();
+    let savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(savedUser);
+    } else {
+      setGuestUser();
+    }
   }, []);
   useEffect(() => {
     updateCart();
@@ -79,7 +128,9 @@ function signInUser(u) {
   }, [cart]);
   return (
     <>
-      <UserContext.Provider value={{ user, createUser,signInUser }}>
+      <UserContext.Provider
+        value={{ user, setUser, setGuestUser, createUser, signInUser }}
+      >
         <CartContext.Provider
           value={{ cart, addToCart, removeFromCart, checkoutCart }}
         >
