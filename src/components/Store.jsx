@@ -2,7 +2,6 @@ import { createContext, useEffect, useState } from "react";
 import Header from "./Header";
 import Body from "./Body";
 import dummyUsers from "../../dummy-data/users";
-import dummyProducts from "../../dummy-data/products";
 import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
@@ -10,6 +9,7 @@ const ProductContext = createContext();
 const CartContext = createContext();
 const SearchContext = createContext();
 const FilterContext = createContext();
+const baseUrl = "http://localhost:4000";
 
 function Store() {
   const [products, setProducts] = useState([]);
@@ -20,7 +20,7 @@ function Store() {
   const navigate = useNavigate();
 
   function createUser(user) {
-    fetch("http://localhost:4000/auth/signup", {
+    fetch(baseUrl + "/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,13 +39,13 @@ function Store() {
         }
         return response.json();
       })
-      .then((responseData) => {
+      .then(() => {
         signInUser(user);
         navigate("/");
       });
   }
   function signInUser(user) {
-    fetch("http://localhost:4000/auth/signin", {
+    fetch(baseUrl + "/auth/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +66,37 @@ function Store() {
       .then((responseData) => {
         localStorage.setItem("user", JSON.stringify(responseData));
         setUser(responseData);
+        setCartForSignedInUser();
         navigate("/");
+      });
+  }
+
+  function setCartForSignedInUser() {
+    fetch(baseUrl + "/" + user.id + "/currentOrder", {})
+      .then((response) => {
+        if (response.status === 400) {
+          console.log("HJBDSHHBHJBDSHSDHHDBSHBSD")
+          // if the user that signs in doesnt have an open cart
+          fetch(baseUrl + user.id + "/orders", {
+            method: "POST",
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((responseData) => {
+              setCart({ ...cart, id: responseData.data.id });
+            });
+          return cart;
+        } else {
+
+          return response.json();
+        }
+      })
+      .then((responseData) => {
+        setCart(responseData.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching current cart:", error);
       });
   }
 
@@ -75,7 +105,9 @@ function Store() {
   }
 
   function onSearch(text) {
-    console.log(user)
+    console.log(user);
+    console.log(cart);
+
     setSearch(text);
   }
   function addToCart(product) {
@@ -99,33 +131,116 @@ function Store() {
     setCart(cart.filter((p) => p.id !== id));
   }
   function checkoutCart() {
-    console.log(cart);
     navigate("/");
   }
+
   function fetchProducts() {
-    setProducts(dummyProducts);
+    fetch(baseUrl + "/products", {})
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        setProducts(responseData.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching current cart:", error);
+      });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
+
+  function fetchCart() {
+    console.log(user);
+    if (user.role !== "USER") {
+      if (localStorage.getItem("cart") === null) {
+        setCart([]);
+      }
+    } else {
+      fetch(baseUrl + "/" + user.id + "/currentOrder", {})
+        .then((response) => {
+          if (response.status === 400) {
+            createNewCartForUser();
+          } else if (!response.ok) {
+            throw new Error("Something went wrong");
+          }
+          return response.json();
+        })
+        .then((responseData) => {
+          setCart(responseData.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching current cart:", error);
+        });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  function createNewCartForUser() {
+    fetch(baseUrl + user.id + "/orders", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (response.status === 404) {
+          console.log("User not found.");
+        } else if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        setCart(responseData.data);
+      })
+      .catch((error) => {
+        console.error("Error creating new cart:", error);
+      });
+  }
+
   function setGuestUser() {
     setUser(dummyUsers[0]);
     localStorage.removeItem("user");
   }
-  function updateCart() {}
+
+  function updateDatabaseCart() {
+    fetch(baseUrl + "/" + user.id + "/orders/" + cart.id, {
+      mode: "no-cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cart.orderLine),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        setUser(responseData);
+      });
+  }
+
   useEffect(() => {
-    fetchProducts();
     let savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(savedUser);
     } else {
       setGuestUser();
     }
+    fetchProducts();
+    fetchCart();
   }, []);
-  useEffect(() => {
-    updateCart();
-  }, [user]);
 
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
+  // useEffect(() => {
+  //   updateCart();
+  // }, [user]);
+
+  // useEffect(() => {
+  //   console.log(cart);
+  // }, [cart]);
   return (
     <>
       <UserContext.Provider
