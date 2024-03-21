@@ -73,7 +73,6 @@ function Store() {
 
   function setCartForSignedInUser(user) {
     fetch(baseUrl + "/users/" + user.id + "/currentOrder", {})
-
       .then((response) => {
         if (response.status === 400) {
           // if the user that signs in doesnt have an open cart
@@ -109,7 +108,6 @@ function Store() {
   }
 
   function onSearch(text) {
-
     setSearch(text);
   }
   function addToCart(product) {
@@ -160,14 +158,12 @@ function Store() {
           quantity: p.quantity,
         })),
       }),
-    })
-      .then((response) => {
-        console.log(
-          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  "
-        );
-        console.log(response);
-      })
-
+    }).then((response) => {
+      console.log(
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  "
+      );
+      console.log(response);
+    });
   }
 
   function removeFromCart(id) {
@@ -223,6 +219,8 @@ function Store() {
           })),
         }),
       }).then((response) => {
+        setCart({ orderLine: [] });
+        localStorage.removeItem("cart");
         console.log(
           "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  "
         );
@@ -252,7 +250,7 @@ function Store() {
       });
   }
   function removeProduct(id) {
-    console.log(user)
+    console.log(user);
 
     fetch(baseUrl + `/products/${id}`, {
       method: "DELETE",
@@ -268,9 +266,9 @@ function Store() {
         return response.json();
       })
       .then((responseData) => {
-        console.log(responseData.data)
+        console.log(responseData.data);
         setProducts(products.filter((p) => p.id != responseData.data.id));
-        navigate("/")
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error fetching current cart:", error);
@@ -342,7 +340,7 @@ function Store() {
   function setGuestUser() {
     if (localStorage.getItem("guestUser")) {
       setUser(JSON.parse(localStorage.getItem("guestUser")));
-      localStorage.setItem("user", localStorage.getItem("guestUser"))
+      localStorage.setItem("user", localStorage.getItem("guestUser"));
     } else {
       fetch(baseUrl + "/users/guest")
         .then((response) => {
@@ -363,7 +361,7 @@ function Store() {
       if (typeof savedUser === JSON) {
         setUser(savedUser);
       } else {
-        console.log(savedUser)
+        console.log(savedUser);
         setUser(JSON.parse(savedUser));
       }
     } else {
@@ -375,7 +373,7 @@ function Store() {
 
   useEffect(() => {
     fetchCart();
-    console.log(user)
+    console.log(user);
   }, [user]);
 
   // useEffect(() => {
