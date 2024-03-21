@@ -21,7 +21,8 @@ function SignIn() {
   return (
     <div>
       <h2>Sign In</h2>
-      <p>
+      <hr/>
+      <p className="signin-row"> 
         <span>Email</span>
         <input
           type="email"
@@ -30,7 +31,7 @@ function SignIn() {
           onChange={onChange}
         />
       </p>
-      <p>
+      <p className="signin-row"> 
         <span>Password</span>
         <input
           type="password"

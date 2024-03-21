@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Header from "./Header";
 import Body from "./Body";
-import dummyUsers from "../../dummy-data/users";
 import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
@@ -73,15 +72,15 @@ function Store() {
   }
 
   function setCartForSignedInUser(user) {
-    console.log(user)
     fetch(baseUrl + "/users/" + user.id + "/currentOrder", {})
+
       .then((response) => {
         if (response.status === 400) {
           // if the user that signs in doesnt have an open cart
           fetch(baseUrl + "/users/" + user.id + "/orders", {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${user.token}`,
+              Authorization: `Bearer ${user.token}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({}),
@@ -110,6 +109,7 @@ function Store() {
   }
 
   function onSearch(text) {
+
     setSearch(text);
   }
   function addToCart(product) {
@@ -146,11 +146,11 @@ function Store() {
   useEffect(() => {}, [cart]);
 
   function updateDatabaseCart(updatedCart) {
-    console.log(updatedCart)
+    console.log(updatedCart);
     fetch(baseUrl + "/users/" + user.id + "/orders/" + updatedCart.id, {
       method: "PUT",
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -166,6 +166,7 @@ function Store() {
         );
         console.log(response);
       })
+
   }
 
   function removeFromCart(id) {
@@ -174,21 +175,63 @@ function Store() {
       orderLine: cart.orderLine.filter((p) => p.product.id != id),
     };
     setCart(updatedCart);
-    console.log(updatedCart)
-    console.log(typeof user)
+    console.log(updatedCart);
+    console.log(typeof user);
     if (user.role === "USER") {
-      console.log("dgshh")
+      console.log("dgshh");
       updateDatabaseCart(updatedCart);
     }
   }
   function checkoutCart() {
-    navigate("/");
+    if (user.role != "GUEST") {
+      fetch(baseUrl + "/users/" + user.id + "/currentOrder/checkout", {
+        method: "PUT",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Something went wrong");
+          }
+          return response.json();
+        })
+        .then(() => {
+          fetchCart();
+        })
+        .catch((error) => {
+          console.error("Error checking out cart:", error);
+        });
+    } else {
+      const currentDateTime = new Date(); // Get the current date and time
+      const offsetMinutes = currentDateTime.getTimezoneOffset(); // Get the offset in minutes
+      const offsetHours = offsetMinutes / 60; // Convert minutes to hours
+      const offsetDateTime = new Date(
+        currentDateTime.getTime() - offsetMinutes * 60000
+      ); // Apply offset to get UTC time
+
+      fetch(baseUrl + "/users/" + user.id + "/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: offsetDateTime,
+          orderLine: cart.orderLine.map((p) => ({
+            product: p.product.id,
+            quantity: p.quantity,
+          })),
+        }),
+      }).then((response) => {
+        console.log(
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  "
+        );
+        console.log(response);
+      });
+    }
   }
 
   function fetchProducts() {
     fetch(baseUrl + "/products", {
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
     })
@@ -221,8 +264,7 @@ function Store() {
     } else {
       fetch(baseUrl + "/users/" + user.id + "/currentOrder", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
       })
         .then((response) => {
@@ -247,7 +289,7 @@ function Store() {
     fetch(baseUrl + "/users/" + user.id + "/orders", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ date: null }),
@@ -269,17 +311,30 @@ function Store() {
   }
 
   function setGuestUser() {
-    setUser(dummyUsers[0]);
-    localStorage.setItem("user", JSON.stringify(dummyUsers[0]));
+    if (localStorage.getItem("guestUser")) {
+      setUser(JSON.parse(localStorage.getItem("guestUser")));
+    } else {
+      fetch(baseUrl + "/users/guest")
+        .then((response) => {
+          return response.json();
+        })
+        .then((responseData) => {
+          setUser(responseData.data);
+          console.log(responseData.data);
+          localStorage.setItem("guestUser", JSON.stringify(responseData.data));
+          localStorage.setItem("user", responseData.data);
+        });
+    }
   }
 
   useEffect(() => {
-    
+  //  localStorage.removeItem("user")
     let savedUser = localStorage.getItem("user");
     if (savedUser) {
       if (typeof savedUser === JSON) {
         setUser(savedUser);
       } else {
+        console.log(savedUser)
         setUser(JSON.parse(savedUser));
       }
     } else {

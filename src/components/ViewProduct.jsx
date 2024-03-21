@@ -14,11 +14,11 @@ function ViewProduct() {
   }, [products, id]);
   if (product) {
     return (
-      <>
+      <div className="view-product">
         <BuyProduct product={product} />
         <hr/>
         <ProductFacts product={product} />
-      </>
+      </div>
     );
   }
   return <>Loading...</>;
