@@ -81,7 +81,6 @@ function Store() {
             method: "POST",
             headers: {
               Authorization: `Bearer ${user.token}`,
-              Authorization: `Bearer ${user.token}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({}),
@@ -153,7 +152,6 @@ function Store() {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${user.token}`,
-        Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -208,7 +206,6 @@ function Store() {
     } else {
       const currentDateTime = new Date(); // Get the current date and time
       const offsetMinutes = currentDateTime.getTimezoneOffset(); // Get the offset in minutes
-      const offsetHours = offsetMinutes / 60; // Convert minutes to hours
       const offsetDateTime = new Date(
         currentDateTime.getTime() - offsetMinutes * 60000
       ); // Apply offset to get UTC time
