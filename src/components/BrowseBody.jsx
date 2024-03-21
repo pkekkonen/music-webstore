@@ -1,8 +1,10 @@
 import ProductList from "./ProductList";
 import "../styles/Product.css";
+import { useState } from "react";
 export default function BrowseBody() {
+  const [sort, setSort] = useState("");
   const handleSortSelection = (event) => {
-    console.log(event.target.value);
+    setSort(event.target.value);
   };
 
   return (
@@ -19,7 +21,7 @@ export default function BrowseBody() {
           <option value="price-high-to-low">Price, high to low</option>
         </select>
       </div>
-      <ProductList />
+      <ProductList sort={sort} />
     </div>
   );
 }
