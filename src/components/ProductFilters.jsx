@@ -9,7 +9,6 @@ function ProductFilters() {
   const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
-    console.log(products);
     let artistList = [];
     let genreList = [];
     let companyList = [];
@@ -24,15 +23,15 @@ function ProductFilters() {
     setCompanies(new Set(companyList));
   }, [products]);
 
-  useEffect(() => {
-    console.log(artists);
-  }, [artists]);
-  useEffect(() => {
-    console.log(genres);
-  }, [genres]);
-  useEffect(() => {
-    console.log(companies);
-  }, [companies]);
+  // useEffect(() => {
+  //   console.log(artists);
+  // }, [artists]);
+  // useEffect(() => {
+  //   console.log(genres);
+  // }, [genres]);
+  // useEffect(() => {
+  //   console.log(companies);
+  // }, [companies]);
 
   if (products) {
     return (
