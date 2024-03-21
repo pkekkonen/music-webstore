@@ -21,13 +21,13 @@ function ViewProduct() {
   }, [products, id]);
   if (product && user) {
     return (
-      <>
+      <div className="view-product">
         {user.role === "ADMIN" && <button onClick={onRemove}>Remove</button>}
 
         <BuyProduct product={product} />
         <hr />
         <ProductFacts product={product} />
-      </>
+      </div>
     );
   }
   return <>Loading...</>;

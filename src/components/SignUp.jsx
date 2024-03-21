@@ -23,17 +23,18 @@ function SignUp() {
       <div>
         <h2>Create new account</h2>
         <hr />
-        <p>
+        <p className="signup-row"> 
           <span>Full Name</span>
           <input name="name" value={user.name} onChange={onChange}></input>
         </p>
-        <p>
+        <p className="signup-row"> 
           <span>Email</span>
           <input name="email" value={user.email} onChange={onChange}></input>
         </p>
-        <p>
+        <p className="signup-row"> 
           <span>Password</span>
           <input
+          type="password"
             name="password"
             value={user.password}
             onChange={onChange}

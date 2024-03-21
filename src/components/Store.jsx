@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Header from "./Header";
 import Body from "./Body";
-import dummyUsers from "../../dummy-data/users";
 import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
@@ -65,6 +64,7 @@ function Store() {
       })
       .then((responseData) => {
         localStorage.setItem("user", JSON.stringify(responseData));
+        console.log(responseData);
         setUser(responseData);
         setCartForSignedInUser(responseData);
         navigate("/");
@@ -73,12 +73,14 @@ function Store() {
 
   function setCartForSignedInUser(user) {
     fetch(baseUrl + "/users/" + user.id + "/currentOrder", {})
+
       .then((response) => {
         if (response.status === 400) {
           // if the user that signs in doesnt have an open cart
           fetch(baseUrl + "/users/" + user.id + "/orders", {
             method: "POST",
             headers: {
+              Authorization: `Bearer ${user.token}`,
               Authorization: `Bearer ${user.token}`,
               "Content-Type": "application/json",
             },
@@ -108,9 +110,7 @@ function Store() {
   }
 
   function onSearch(text) {
-    console.log(user);
-    console.log(user.token);
-    console.log(cart);
+
     setSearch(text);
   }
   function addToCart(product) {
@@ -148,9 +148,11 @@ function Store() {
 
   function updateDatabaseCart(updatedCart) {
     console.log(updatedCart);
+    console.log(updatedCart);
     fetch(baseUrl + "/users/" + user.id + "/orders/" + updatedCart.id, {
       method: "PUT",
       headers: {
+        Authorization: `Bearer ${user.token}`,
         Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
@@ -167,7 +169,7 @@ function Store() {
         );
         console.log(response);
       })
-      .then((responseData) => {});
+
   }
 
   function removeFromCart(id) {
@@ -178,13 +180,58 @@ function Store() {
     setCart(updatedCart);
     console.log(updatedCart);
     console.log(typeof user);
+    console.log(updatedCart);
+    console.log(typeof user);
     if (user.role === "USER") {
+      console.log("dgshh");
       console.log("dgshh");
       updateDatabaseCart(updatedCart);
     }
   }
   function checkoutCart() {
-    navigate("/");
+    if (user.role != "GUEST") {
+      fetch(baseUrl + "/users/" + user.id + "/currentOrder/checkout", {
+        method: "PUT",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Something went wrong");
+          }
+          return response.json();
+        })
+        .then(() => {
+          fetchCart();
+        })
+        .catch((error) => {
+          console.error("Error checking out cart:", error);
+        });
+    } else {
+      const currentDateTime = new Date(); // Get the current date and time
+      const offsetMinutes = currentDateTime.getTimezoneOffset(); // Get the offset in minutes
+      const offsetHours = offsetMinutes / 60; // Convert minutes to hours
+      const offsetDateTime = new Date(
+        currentDateTime.getTime() - offsetMinutes * 60000
+      ); // Apply offset to get UTC time
+
+      fetch(baseUrl + "/users/" + user.id + "/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: offsetDateTime,
+          orderLine: cart.orderLine.map((p) => ({
+            product: p.product.id,
+            quantity: p.quantity,
+          })),
+        }),
+      }).then((response) => {
+        console.log(
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  "
+        );
+        console.log(response);
+      });
+    }
   }
 
   function fetchProducts() {
@@ -295,8 +342,20 @@ function Store() {
   }
 
   function setGuestUser() {
-    setUser(dummyUsers[0]);
-    localStorage.setItem("user", JSON.stringify(dummyUsers[0]));
+    if (localStorage.getItem("guestUser")) {
+      setUser(JSON.parse(localStorage.getItem("guestUser")));
+    } else {
+      fetch(baseUrl + "/users/guest")
+        .then((response) => {
+          return response.json();
+        })
+        .then((responseData) => {
+          setUser(responseData.data);
+          console.log(responseData.data);
+          localStorage.setItem("guestUser", JSON.stringify(responseData.data));
+          localStorage.setItem("user", responseData.data);
+        });
+    }
   }
 
   useEffect(() => {
@@ -305,6 +364,7 @@ function Store() {
       if (typeof savedUser === JSON) {
         setUser(savedUser);
       } else {
+        console.log(savedUser)
         setUser(JSON.parse(savedUser));
       }
     } else {
@@ -316,6 +376,7 @@ function Store() {
 
   useEffect(() => {
     fetchCart();
+    console.log(user)
   }, [user]);
 
   // useEffect(() => {
