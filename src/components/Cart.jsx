@@ -1,26 +1,30 @@
-import { useContext,  } from "react";
+import { useContext } from "react";
 import { CartContext } from "./Store";
 
 function Cart() {
   const cartContext = useContext(CartContext);
-  const { cart, checkoutCart,removeFromCart } = cartContext;
-function onCheckout(){
-    checkoutCart()
-}
-function onRemove(event){
-const id = event.target.value
-removeFromCart(id)}
+  const { cart, checkoutCart, removeFromCart } = cartContext;
+  function onCheckout() {
+    checkoutCart();
+  }
+  function onRemove(event) {
+    const id = event.target.value;
+    removeFromCart(id);
+  }
 
+  console.log(cart);
   if (cart) {
     return (
       <>
-        {cart.map((product) => {
+        {cart.orderLine.map((product) => {
           return (
-            <div key={product.id}>
+            <div key={product.product.id}>
               <p>
-                <span>{product.product_title}</span>
+                <span>{product.product.title}</span>
                 <span>{product.quantity}</span>
-                <button value={product.id} onClick={onRemove}>Remove</button>
+                <button value={product.product.id} onClick={onRemove}>
+                  Remove
+                </button>
               </p>
             </div>
           );
@@ -28,7 +32,7 @@ removeFromCart(id)}
         <button onClick={onCheckout}>Check out</button>
       </>
     );
-  }
+  } 
   return <>Loading...</>;
 }
 export default Cart;
