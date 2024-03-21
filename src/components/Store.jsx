@@ -147,6 +147,7 @@ function Store() {
 
   function updateDatabaseCart(updatedCart) {
     console.log(updatedCart);
+    console.log(updatedCart);
     fetch(baseUrl + "/users/" + user.id + "/orders/" + updatedCart.id, {
       method: "PUT",
       headers: {
@@ -177,7 +178,10 @@ function Store() {
     setCart(updatedCart);
     console.log(updatedCart);
     console.log(typeof user);
+    console.log(updatedCart);
+    console.log(typeof user);
     if (user.role === "USER") {
+      console.log("dgshh");
       console.log("dgshh");
       updateDatabaseCart(updatedCart);
     }
@@ -202,7 +206,6 @@ function Store() {
     } else {
       const currentDateTime = new Date(); // Get the current date and time
       const offsetMinutes = currentDateTime.getTimezoneOffset(); // Get the offset in minutes
-      const offsetHours = offsetMinutes / 60; // Convert minutes to hours
       const offsetDateTime = new Date(
         currentDateTime.getTime() - offsetMinutes * 60000
       ); // Apply offset to get UTC time
@@ -248,6 +251,30 @@ function Store() {
         console.error("Error fetching current cart:", error);
       });
   }
+  function removeProduct(id) {
+    console.log(user)
+
+    fetch(baseUrl + `/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        console.log(responseData.data)
+        setProducts(products.filter((p) => p.id != responseData.data.id));
+      })
+      .catch((error) => {
+        console.error("Error fetching current cart:", error);
+      });
+  }
 
   function fetchCart() {
     if (user.role !== "USER") {
@@ -265,6 +292,7 @@ function Store() {
       fetch(baseUrl + "/users/" + user.id + "/currentOrder", {
         headers: {
           Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json",
         },
       })
         .then((response) => {
@@ -328,7 +356,6 @@ function Store() {
   }
 
   useEffect(() => {
-  //  localStorage.removeItem("user")
     let savedUser = localStorage.getItem("user");
     if (savedUser) {
       if (typeof savedUser === JSON) {
@@ -360,7 +387,7 @@ function Store() {
         <CartContext.Provider
           value={{ cart, addToCart, removeFromCart, checkoutCart }}
         >
-          <ProductContext.Provider value={{ products }}>
+          <ProductContext.Provider value={{ products, removeProduct }}>
             <SearchContext.Provider value={{ search, onSearch }}>
               <FilterContext.Provider value={{ filters, onSetFilters }}>
                 <Header />
