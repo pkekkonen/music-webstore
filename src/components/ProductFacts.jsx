@@ -16,6 +16,7 @@ function ProductFacts({ product }) {
             <p>{product.artist?product.artist:"-"}</p>
             <p>{product.recordCompany?product.recordCompany:"-"}</p>
             <p>{product.releaseYear?product.releaseYear:"-"}</p>
+
             {product.genres &&
               product.genres.map((genre) => {
                 return <p key={genre}>{genre}</p>;

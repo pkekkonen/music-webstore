@@ -1,18 +1,26 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "./Store";
 import placeholder from "../../assets/music-vinyl-placeholder.png";
 
 function Cart() {
   const cartContext = useContext(CartContext);
   const { cart, checkoutCart, removeFromCart } = cartContext;
+  const [checkedOut, setCheckedOut] = useState(false);
+
   function onCheckout() {
+    console.log(cart);
     checkoutCart();
+    console.log(cart);
+    setCheckedOut(true)
   }
   function onRemove(event) {
     const id = event.target.value;
     removeFromCart(id);
   }
 
+    if (checkedOut) {
+      return <>Thank you for your purchase!</>;
+    }
   if (cart) {
     return (
       <div className="cart">
@@ -28,10 +36,12 @@ function Cart() {
             </div>
           );
         })}
-        <button onClick={onCheckout}>Check out</button>
-      </div>
+
+        {cart.orderLine && <button onClick={onCheckout}>Check out</button>}
+      </>
     );
-  }
+  } 
+
   return <>Loading...</>;
 }
 export default Cart;
