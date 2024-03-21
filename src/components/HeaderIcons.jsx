@@ -4,41 +4,53 @@ import { UserContext } from "./Store";
 
 function HeaderIcons() {
   const userContext = useContext(UserContext);
-  const { setGuestUser } = userContext;
+  const { setGuestUser, user } = userContext;
 
   const navigate = useNavigate();
   function onSignOut() {
     setGuestUser();
     console.log("signOut");
   }
-  return (
-    <>
-      <div className="header-icons">
-        <button onClick={onSignOut}>Sign out</button>
-        <button
-          onClick={() => {
-            navigate("/signup");
-          }}
-        >
-          Sign Up
-        </button>
-        <button
-          onClick={() => {
-            navigate("/signin");
-          }}
-        >
-          Sign In
-        </button>
+  if (user) {
+    return (
+      <>
+        <div className="header-icons">
+          {user.role != "GUEST" && (
+            <>
+              <span>{user.name}</span>
+              <button onClick={onSignOut}>Sign out</button>
+            </>
+          )}
+          {user.role === "GUEST" && (
+            <>
+              <button
+                onClick={() => {
+                  navigate("/signup");
+                }}
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/signin");
+                }}
+              >
+                Sign In
+              </button>
+            </>
+          )}
 
-        <button
-          onClick={() => {
-            navigate("/cart");
-          }}
-        >
-          To cart
-        </button>
-      </div>
-    </>
-  );
+          <button
+            onClick={() => {
+              navigate("/cart");
+            }}
+          >
+            To cart
+          </button>
+        </div>
+      </>
+    );
+  }
+  return <>Loading...</>;
 }
 export default HeaderIcons;
