@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "./Store";
+import placeholder from "../../assets/music-vinyl-placeholder.png";
 
 /* eslint-disable react/prop-types */
 function BuyProduct({ product }) {
@@ -11,15 +12,17 @@ function BuyProduct({ product }) {
   if (product) {
     return (
       <>
-        <>
-          <div>album here</div>
-          <div>
+        <div className="buy"> 
+          <div className="buy-left">
+            <img src={placeholder} />
+          </div>
+          <div className="buy-right">
             <h2>{product.artist + " - " + product.title}</h2>
             <h4>{product.artist}</h4>
-            <div>{product.price}</div>
+            <div>{"$"+product.price}</div>
             <button onClick={onBuy}>Add to Cart</button>
           </div>
-        </>
+        </div>
       </>
     );
   }

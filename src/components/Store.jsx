@@ -165,6 +165,7 @@ function Store() {
       );
       console.log(response);
     });
+
   }
 
   function removeFromCart(id) {
