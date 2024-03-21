@@ -9,14 +9,14 @@ function HeaderSearch() {
     onSearch(search);
   }
   return (
-    <div>
-      <input
+    <div className="header-search">
+      <input className="header-search-input"
         name="search"
         placeholder="Search..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <button onClick={onSearchClick}>Search</button>
+      <button className="header-search-button" onClick={onSearchClick}>Search</button>
     </div>
   );
 }
