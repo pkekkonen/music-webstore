@@ -270,6 +270,7 @@ function Store() {
       .then((responseData) => {
         console.log(responseData.data)
         setProducts(products.filter((p) => p.id != responseData.data.id));
+        navigate("/")
       })
       .catch((error) => {
         console.error("Error fetching current cart:", error);
