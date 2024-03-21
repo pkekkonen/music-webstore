@@ -23,6 +23,7 @@ function Cart() {
     }
   if (cart) {
     return (
+      <>
       <div className="cart">
         {cart.orderLine.map((product) => {
           return (
@@ -38,6 +39,7 @@ function Cart() {
         })}
 
         {cart.orderLine && <button onClick={onCheckout}>Check out</button>}
+        </div>
       </>
     );
   } 

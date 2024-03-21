@@ -11,6 +11,7 @@ function HeaderIcons() {
     setGuestUser();
     console.log("signOut");
   }
+
   if (user) {
     return (
       <>
@@ -27,7 +28,7 @@ function HeaderIcons() {
                   To cart
                 </button>
               </div>
-              <span>{user.name.toUpperCase()}</span>
+             {user.name && <span>{user.name.toUpperCase()}</span>}
 
             </div>
           )}

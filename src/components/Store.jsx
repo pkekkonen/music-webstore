@@ -313,6 +313,7 @@ function Store() {
   function setGuestUser() {
     if (localStorage.getItem("guestUser")) {
       setUser(JSON.parse(localStorage.getItem("guestUser")));
+      localStorage.setItem("user", localStorage.getItem("guestUser"))
     } else {
       fetch(baseUrl + "/users/guest")
         .then((response) => {
@@ -328,7 +329,9 @@ function Store() {
   }
 
   useEffect(() => {
-  //  localStorage.removeItem("user")
+
+
+  // localStorage.removeItem("user")
     let savedUser = localStorage.getItem("user");
     if (savedUser) {
       if (typeof savedUser === JSON) {
