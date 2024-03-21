@@ -107,8 +107,6 @@ function Store() {
   }
 
   function onSearch(text) {
-    console.log(user)
-    console.log(cart)
     setSearch(text);
   }
   function addToCart(product) {
@@ -164,7 +162,6 @@ function Store() {
         );
         console.log(response);
       })
-      .then((responseData) => {});
   }
 
   function removeFromCart(id) {
