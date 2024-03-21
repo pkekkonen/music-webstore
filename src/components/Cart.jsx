@@ -12,7 +12,6 @@ function Cart() {
     removeFromCart(id);
   }
 
-  console.log(cart);
   if (cart) {
     return (
       <>
