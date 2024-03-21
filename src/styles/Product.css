@@ -1,41 +1,66 @@
-.browse{
-    margin-left: 5px;
-    margin-right: 5px;
-    border-radius: 5px;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.browse {
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 5px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.product-body{
-    display: grid;
-    grid-template-columns: 20% auto;
-
-
+.product-body {
+  display: grid;
+  grid-template-columns: 20% auto;
 }
 
-.sort{
-    
-    justify-self: end;
+.sort {
+  justify-self: end;
 }
-.list{
-    
-    display: grid;
-    grid-template-columns: auto auto auto auto;
+.list {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
 }
-.item{
-    background-color: lightgray;
-    border-radius: 2px;
-    margin: 10px;
+.item {
+  background-color: lightgray;
+  border-radius: 2px;
+  margin: 10px;
 }
 .item img {
-    margin: 10px;
-    background-color: darkgray;
+  margin: 10px;
+  background-color: darkgray;
 }
 a {
-    color: black;
-    text-decoration: none;
+  color: black;
+  text-decoration: none;
 }
-.item-text{
-    margin: 10px;
+.item-text {
+  margin: 10px;
 }
+.buy {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  
+}
+.buy img {
+  width: 100%;
+}
+.buy-right {
+  display: flex;
+  flex-direction: column;
+margin-left: 20px;
+}
+.buy-right div {
+  justify-self: flex-end;
+}
+.buy-right button {
+    margin-top: auto;
+
+}
+.buy-left{
+    margin-right:20px ;
+    background-color: lightgray;
+}
+.details{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+

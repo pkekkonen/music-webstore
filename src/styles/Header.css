@@ -9,15 +9,23 @@
   grid-template-columns: 20% auto 20%;
   padding-left: 60px;
 }
-.header button{
- 
-    background-color: white;
-    border-style: none;
-    border-radius: 2px;
-    padding: 5px;
-    margin: 2px;
-    color: black;
-    font-size: 15px;
+
+.header button {
+  background-color: white;
+  border-style: none;
+  border-radius: 2px;
+  padding: 5px;
+  margin: 2px;
+  color: black;
+  font-size: 15px;
+  cursor: pointer;
+}
+.header button:hover {
+  background-color: rgb(235, 235, 235);
+}
+.header button:active {
+  background-color: rgb(168, 168, 168); 
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); 
 }
 a {
   color: aliceblue;
@@ -26,31 +34,30 @@ a {
   width: 100%;
 }
 .banner img {
-  width: 300px;
+  width: 100%;
+  max-width: 250px;
 }
 .header-search {
   display: flex;
   align-items: center;
   flex-direction: row;
   width: 100%;
- 
 }
-.header-search-input{
+.header-search-input {
   flex-grow: 1;
   width: 0;
   margin-right: 10px;
   padding: 10px;
   font-size: 20px;
 }
-.header-search-button{
+.header-search-button {
   height: 50px;
 }
-.header-icons{
+.header-icons {
   display: flex;
   padding-left: 30px;
 }
-.header-icons button{
-width: 50px;
-height: 50px;
+.header-icons button {
+  width: 50px;
+  height: 50px;
 }
-

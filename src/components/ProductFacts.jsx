@@ -3,18 +3,19 @@ function ProductFacts({ product }) {
   if (product) {
     return (
       <>
-        <div>
-          <h3>DETAILS</h3>
+        {" "}
+        <h3>DETAILS</h3>
+        <div className="details">
           <div>
-            <strong>Artist: </strong>
-            <strong>Label:</strong>
-            <strong>Release:</strong>
-            <strong>Genres:</strong>
+            <p><strong>Artist: </strong></p>
+            <p><strong>Label:</strong></p>
+            <p><strong>Release:</strong></p>
+            <p><strong>Genres:</strong></p>
           </div>
           <div>
-            <p>{product.artist}</p>
-            <p>{product.record_company}</p>
-            <p>{product.release_year}</p>
+            <p>{product.artist?product.artist:"-"}</p>
+            <p>{product.recordCompany?product.recordCompany:"-"}</p>
+            <p>{product.releaseYear?product.releaseYear:"-"}</p>
             {product.genres &&
               product.genres.map((genre) => {
                 return <p key={genre}>{genre}</p>;

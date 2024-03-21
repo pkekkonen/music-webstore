@@ -164,7 +164,7 @@ function Store() {
         );
         console.log(response);
       })
-      .then((responseData) => {});
+      //.then((responseData) => {});
   }
 
   function removeFromCart(id) {

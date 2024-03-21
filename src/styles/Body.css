@@ -8,9 +8,28 @@
   padding: 10px;
   border-style: solid;
 }
- button{
+button{
     background-color: black;
     color: white;
     font-size: 20px;
     padding: 10px;
+    cursor: pointer;
+}
+button:hover{
+    background-color: rgb(61, 61, 61);
+}
+button:active{
+    background-color: rgb(90, 90, 90);
+}
+.cart-item{
+    display: grid;
+    grid-template-columns: 30vh auto 10vh 10vh;
+    align-items: center;
+}
+.signup-row, .signin-row{
+    display: grid;
+    grid-template-columns: 20vh auto;
+}
+input{
+    font-size: 15px;
 }
