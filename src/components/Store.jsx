@@ -193,7 +193,10 @@ function Store() {
   }
 
   function removeFromCart(id) {
-    const updatedCart = cart.filter((p) => p.product.id !== id);
+    console.log("DIDDIDIIDIDIDIDIID    ")
+    console.log(id)
+    const updatedCart = {...cart, orderLine: cart.orderLine.filter((p) => p.product.id != id)};
+    console.log(updatedCart)
     setCart(updatedCart);
     if (user.role === "USER") {
       updateDatabaseCart(updatedCart);
