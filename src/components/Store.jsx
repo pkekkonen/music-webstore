@@ -64,6 +64,7 @@ function Store() {
       })
       .then((responseData) => {
         localStorage.setItem("user", JSON.stringify(responseData));
+        console.log(responseData);
         setUser(responseData);
         setCartForSignedInUser(responseData);
         navigate("/");
@@ -71,7 +72,8 @@ function Store() {
   }
 
   function setCartForSignedInUser(user) {
-    fetch(baseUrl + "/users/" + user.id + "/currentOrder")
+    fetch(baseUrl + "/users/" + user.id + "/currentOrder", {})
+
       .then((response) => {
         if (response.status === 400) {
           // if the user that signs in doesnt have an open cart
@@ -107,9 +109,7 @@ function Store() {
   }
 
   function onSearch(text) {
-    console.log(user);
-    console.log(user.token);
-    console.log(cart);
+
     setSearch(text);
   }
   function addToCart(product) {
@@ -159,12 +159,13 @@ function Store() {
           quantity: p.quantity,
         })),
       }),
-    }).then((response) => {
-      console.log(
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  "
-      );
-      console.log(response);
-    });
+    })
+      .then((response) => {
+        console.log(
+          "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  "
+        );
+        console.log(response);
+      })
 
   }
 
@@ -345,6 +346,7 @@ function Store() {
 
   useEffect(() => {
     fetchCart();
+    console.log(user)
   }, [user]);
 
   // useEffect(() => {

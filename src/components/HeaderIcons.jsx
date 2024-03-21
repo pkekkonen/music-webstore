@@ -4,41 +4,62 @@ import { UserContext } from "./Store";
 
 function HeaderIcons() {
   const userContext = useContext(UserContext);
-  const { setGuestUser } = userContext;
+  const { setGuestUser, user } = userContext;
 
   const navigate = useNavigate();
   function onSignOut() {
     setGuestUser();
     console.log("signOut");
   }
-  return (
-    <>
-      <div className="header-icons">
-        <button onClick={onSignOut}>Sign out</button>
-        <button
-          onClick={() => {
-            navigate("/signup");
-          }}
-        >
-          Sign Up
-        </button>
-        <button
-          onClick={() => {
-            navigate("/signin");
-          }}
-        >
-          Sign In
-        </button>
+  if (user) {
+    return (
+      <>
+        <div className="header-icons">
+          {user.role != "GUEST" && (
+            <div className="user">
+              <div className="buttons">
+                <button onClick={onSignOut}>Sign out</button>
+                <button
+                  onClick={() => {
+                    navigate("/cart");
+                  }}
+                >
+                  To cart
+                </button>
+              </div>
+              <span>{user.name.toUpperCase()}</span>
 
-        <button
-          onClick={() => {
-            navigate("/cart");
-          }}
-        >
-          To cart
-        </button>
-      </div>
-    </>
-  );
+            </div>
+          )}
+          {user.role === "GUEST" && (
+            <div className="guest">
+              <button
+                onClick={() => {
+                  navigate("/signup");
+                }}
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/signin");
+                }}
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/cart");
+                }}
+              >
+                To cart
+              </button>
+            </div>
+          )}
+        </div>
+      </>
+    );
+  }
+  return <>Loading...</>;
 }
 export default HeaderIcons;
