@@ -16,13 +16,23 @@ function HeaderIcons() {
       <>
         <div className="header-icons">
           {user.role != "GUEST" && (
-            <>
-              <span>{user.name}</span>
-              <button onClick={onSignOut}>Sign out</button>
-            </>
+            <div className="user">
+              <div className="buttons">
+                <button onClick={onSignOut}>Sign out</button>
+                <button
+                  onClick={() => {
+                    navigate("/cart");
+                  }}
+                >
+                  To cart
+                </button>
+              </div>
+              <span>{user.name.toUpperCase()}</span>
+
+            </div>
           )}
           {user.role === "GUEST" && (
-            <>
+            <div className="guest">
               <button
                 onClick={() => {
                   navigate("/signup");
@@ -37,16 +47,15 @@ function HeaderIcons() {
               >
                 Sign In
               </button>
-            </>
+              <button
+                onClick={() => {
+                  navigate("/cart");
+                }}
+              >
+                To cart
+              </button>
+            </div>
           )}
-
-          <button
-            onClick={() => {
-              navigate("/cart");
-            }}
-          >
-            To cart
-          </button>
         </div>
       </>
     );

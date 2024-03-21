@@ -65,6 +65,7 @@ function Store() {
       })
       .then((responseData) => {
         localStorage.setItem("user", JSON.stringify(responseData));
+        console.log(responseData);
         setUser(responseData);
         setCartForSignedInUser(responseData);
         navigate("/");
@@ -72,6 +73,7 @@ function Store() {
   }
 
   function setCartForSignedInUser(user) {
+    console.log(user)
     fetch(baseUrl + "/users/" + user.id + "/currentOrder", {})
       .then((response) => {
         if (response.status === 400) {
@@ -79,6 +81,7 @@ function Store() {
           fetch(baseUrl + "/users/" + user.id + "/orders", {
             method: "POST",
             headers: {
+              "Authorization": `Bearer ${user.token}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({}),
@@ -147,6 +150,7 @@ function Store() {
     fetch(baseUrl + "/users/" + user.id + "/orders/" + updatedCart.id, {
       method: "PUT",
       headers: {
+        "Authorization": `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -182,7 +186,12 @@ function Store() {
   }
 
   function fetchProducts() {
-    fetch(baseUrl + "/products", {})
+    fetch(baseUrl + "/products", {
+      headers: {
+        "Authorization": `Bearer ${user.token}`,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Something went wrong");
@@ -210,7 +219,12 @@ function Store() {
         }
       }
     } else {
-      fetch(baseUrl + "/users/" + user.id + "/currentOrder", {})
+      fetch(baseUrl + "/users/" + user.id + "/currentOrder", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+          "Content-Type": "application/json",
+        },
+      })
         .then((response) => {
           if (response.status === 400) {
             createNewCartForUser();
@@ -233,6 +247,7 @@ function Store() {
     fetch(baseUrl + "/users/" + user.id + "/orders", {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ date: null }),
@@ -276,6 +291,7 @@ function Store() {
 
   useEffect(() => {
     fetchCart();
+    console.log(user)
   }, [user]);
 
   // useEffect(() => {
