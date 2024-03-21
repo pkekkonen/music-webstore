@@ -79,7 +79,7 @@ function Store() {
           fetch(baseUrl + "/users/" + user.id + "/orders", {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${user.token}`,
+              Authorization: `Bearer ${user.token}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({}),
@@ -108,9 +108,9 @@ function Store() {
   }
 
   function onSearch(text) {
-    console.log(user)
-    console.log(user.token)
-    console.log(cart)
+    console.log(user);
+    console.log(user.token);
+    console.log(cart);
     setSearch(text);
   }
   function addToCart(product) {
@@ -147,11 +147,11 @@ function Store() {
   useEffect(() => {}, [cart]);
 
   function updateDatabaseCart(updatedCart) {
-    console.log(updatedCart)
+    console.log(updatedCart);
     fetch(baseUrl + "/users/" + user.id + "/orders/" + updatedCart.id, {
       method: "PUT",
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -176,10 +176,10 @@ function Store() {
       orderLine: cart.orderLine.filter((p) => p.product.id != id),
     };
     setCart(updatedCart);
-    console.log(updatedCart)
-    console.log(typeof user)
+    console.log(updatedCart);
+    console.log(typeof user);
     if (user.role === "USER") {
-      console.log("dgshh")
+      console.log("dgshh");
       updateDatabaseCart(updatedCart);
     }
   }
@@ -190,7 +190,7 @@ function Store() {
   function fetchProducts() {
     fetch(baseUrl + "/products", {
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
     })
@@ -202,6 +202,30 @@ function Store() {
       })
       .then((responseData) => {
         setProducts(responseData.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching current cart:", error);
+      });
+  }
+  function removeProduct(id) {
+    console.log(user)
+
+    fetch(baseUrl + `/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        console.log(responseData.data)
+        setProducts(products.filter((p) => p.id != responseData.data.id));
       })
       .catch((error) => {
         console.error("Error fetching current cart:", error);
@@ -223,7 +247,7 @@ function Store() {
     } else {
       fetch(baseUrl + "/users/" + user.id + "/currentOrder", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
           "Content-Type": "application/json",
         },
       })
@@ -249,7 +273,7 @@ function Store() {
     fetch(baseUrl + "/users/" + user.id + "/orders", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ date: null }),
@@ -276,7 +300,6 @@ function Store() {
   }
 
   useEffect(() => {
-    
     let savedUser = localStorage.getItem("user");
     if (savedUser) {
       if (typeof savedUser === JSON) {
@@ -306,7 +329,7 @@ function Store() {
         <CartContext.Provider
           value={{ cart, addToCart, removeFromCart, checkoutCart }}
         >
-          <ProductContext.Provider value={{ products }}>
+          <ProductContext.Provider value={{ products, removeProduct }}>
             <SearchContext.Provider value={{ search, onSearch }}>
               <FilterContext.Provider value={{ filters, onSetFilters }}>
                 <Header />
