@@ -262,7 +262,6 @@ function Store() {
   }
 
   useEffect(() => {
-    
     let savedUser = localStorage.getItem("user");
     if (savedUser) {
       if (typeof savedUser === JSON) {
