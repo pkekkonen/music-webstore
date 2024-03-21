@@ -35,8 +35,8 @@ function ProductFilters() {
 
   if (products) {
     return (
-      <>
-        <div>
+   
+        <div className="filters">
           <div>
             <strong>Artist</strong>
             {[...artists].map((a) => (
@@ -46,6 +46,7 @@ function ProductFilters() {
               </div>
             ))}
           </div>
+          <hr/>
           <div>
             <strong>Genre</strong>
             {[...genres].map((g) => (
@@ -55,7 +56,8 @@ function ProductFilters() {
               </div>
             ))}
           </div>
-          <div>
+          <div>          <hr/>
+
             <strong>Record Company</strong>
             {[...companies].map((c) => (
               <div key={c}>
@@ -65,7 +67,7 @@ function ProductFilters() {
             ))}
           </div>
         </div>
-      </>
+ 
     );
   }
 

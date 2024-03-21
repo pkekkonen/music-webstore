@@ -2,7 +2,6 @@
     margin-left: 5px;
     margin-right: 5px;
     border-radius: 5px;
-    border-style: solid;
     color: black;
     display: flex;
     flex-direction: column;
@@ -11,23 +10,32 @@
 .product-body{
     display: grid;
     grid-template-columns: 20% auto;
-    border-style: solid;
+
 
 }
+
 .sort{
     
     justify-self: end;
 }
 .list{
-    border-style: solid;
+    
     display: grid;
     grid-template-columns: auto auto auto auto;
 }
 .item{
-    background-color: darkgray;
+    background-color: lightgray;
     border-radius: 2px;
     margin: 10px;
 }
+.item img {
+    margin: 10px;
+    background-color: darkgray;
+}
 a {
     color: black;
+    text-decoration: none;
+}
+.item-text{
+    margin: 10px;
 }

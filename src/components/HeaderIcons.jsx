@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "./Store";
 
@@ -13,7 +13,7 @@ function HeaderIcons() {
   }
   return (
     <>
-      <div>
+      <div className="header-icons">
         <button onClick={onSignOut}>Sign out</button>
         <button
           onClick={() => {
@@ -30,9 +30,13 @@ function HeaderIcons() {
           Sign In
         </button>
 
-        <Link to="/cart">
-          <div>cart</div>
-        </Link>
+        <button
+          onClick={() => {
+            navigate("/cart");
+          }}
+        >
+          To cart
+        </button>
       </div>
     </>
   );
