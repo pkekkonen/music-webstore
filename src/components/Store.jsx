@@ -15,7 +15,11 @@ function Store() {
   const [user, setUser] = useState({});
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState({
+    artists: [],
+    genres: [],
+    companies: [],
+  });
   const navigate = useNavigate();
 
   function createUser(user) {
@@ -382,9 +386,7 @@ function Store() {
     console.log(user);
   }, [user]);
 
-  // useEffect(() => {
-  //   console.log(cart);
-  // }, [cart]);
+
   return (
     <>
       <UserContext.Provider
@@ -406,4 +408,11 @@ function Store() {
     </>
   );
 }
-export { Store, UserContext, CartContext, ProductContext, SearchContext };
+export {
+  Store,
+  UserContext,
+  CartContext,
+  ProductContext,
+  SearchContext,
+  FilterContext,
+};
