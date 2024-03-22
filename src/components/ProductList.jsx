@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, useEffect, useState } from "react";
-import { ProductContext, SearchContext } from "./Store";
+import { FilterContext, ProductContext, SearchContext } from "./Store";
 import ProductListItem from "./ProductListItem";
 import "../styles/Product.css";
 
@@ -9,6 +9,8 @@ export default function ProductList({ sort }) {
   const [products, setProducts] = useState(storeProducts);
   const search = useContext(SearchContext).search;
   const [sortedProducts, setSortedProducts] = useState([]);
+  const filters = useContext(FilterContext).filters;
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     function sortProducts() {
@@ -58,9 +60,21 @@ export default function ProductList({ sort }) {
     searchPoducts();
   }, [search, storeProducts]);
 
+  useEffect(() => {
+    console.log(filters);
+    if (filters.artists.length!==0) {
+      setFilteredProducts(
+        sortedProducts.filter((p) => filters.artists.includes(p.artist))
+      );
+    }
+    else{
+      setFilteredProducts(sortedProducts)
+    }
+  }, [filters, sortedProducts]);
+
   return (
     <div className="list">
-      {sortedProducts.map((product, index) => (
+      {filteredProducts.map((product, index) => (
         <ProductListItem key={index} product={product} />
       ))}
     </div>
