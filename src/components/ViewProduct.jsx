@@ -22,7 +22,7 @@ function ViewProduct() {
   if (product && user) {
     return (
       <div className="view-product">
-        {user.role === "ADMIN" && <button onClick={onRemove}>Remove</button>}
+        {user.role === "ROLE_ADMIN" && <button onClick={onRemove}>Remove</button>}
 
         <BuyProduct product={product} />
         <hr />

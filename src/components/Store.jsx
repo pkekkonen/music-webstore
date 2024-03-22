@@ -25,7 +25,7 @@ function Store() {
         "Content-Type": "application/json",
       },
 
-      body: JSON.stringify({ ...user, role: "USER" }),
+      body: JSON.stringify({ ...user, role: "ROLE_USER" }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -134,7 +134,7 @@ function Store() {
       setCart(updatedCart);
     }
 
-    if (user.role === "USER") {
+    if (user.role === "ROLE_USER") {
       updateDatabaseCart(updatedCart);
     }
 
@@ -176,7 +176,7 @@ function Store() {
     console.log(typeof user);
     console.log(updatedCart);
     console.log(typeof user);
-    if (user.role === "USER") {
+    if (user.role === "ROLE_USER") {
       console.log("dgshh");
       console.log("dgshh");
       updateDatabaseCart(updatedCart);
@@ -186,9 +186,13 @@ function Store() {
     if (user.role != "GUEST") {
       fetch(baseUrl + "/users/" + user.id + "/currentOrder/checkout", {
         method: "PUT",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        }
       })
         .then((response) => {
           if (!response.ok) {
+            console.log(response)
             throw new Error("Something went wrong");
           }
           return response.json();
@@ -276,7 +280,8 @@ function Store() {
   }
 
   function fetchCart() {
-    if (user.role !== "USER") {
+
+    if (user.role !== "ROLE_USER") {
       if (localStorage.getItem("cart") === null) {
         setCart({ orderLine: [] });
       } else {
@@ -296,6 +301,7 @@ function Store() {
       })
         .then((response) => {
           if (response.status === 400) {
+            console.log("HHHHHHHHH")
             createNewCartForUser();
             return null;
           } else if (!response.ok) {
