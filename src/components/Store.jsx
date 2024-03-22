@@ -29,7 +29,7 @@ function Store() {
         "Content-Type": "application/json",
       },
 
-      body: JSON.stringify({ ...user, role: "ROLE_USER" }),
+      body: JSON.stringify({ ...user, role: "USER" }),
     })
       .then((response) => {
         if (!response.ok) {
