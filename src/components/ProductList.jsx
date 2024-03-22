@@ -61,14 +61,25 @@ export default function ProductList({ sort }) {
   }, [search, storeProducts]);
 
   useEffect(() => {
-    console.log(filters);
-    if (filters.artists.length!==0) {
+    console.log(sortedProducts);
+    if (
+      filters.artists.length !== 0 ||
+      filters.genres.length !== 0 ||
+      filters.companies.length !== 0
+    ) {
       setFilteredProducts(
-        sortedProducts.filter((p) => filters.artists.includes(p.artist))
+        sortedProducts.filter(
+          (p) =>
+            filters.artists.includes(p.artist) ||
+            p.genres.some(
+              (genre) =>
+                filters.genres.includes(genre) ||
+                filters.companies.includes(p.recordCompany)
+            )
+        )
       );
-    }
-    else{
-      setFilteredProducts(sortedProducts)
+    } else {
+      setFilteredProducts(sortedProducts);
     }
   }, [filters, sortedProducts]);
 

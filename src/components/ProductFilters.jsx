@@ -9,7 +9,7 @@ function ProductFilters() {
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const [checkedArtists, SetCheckedArtists] = useState([]);
+  const [checkedArtists, setCheckedArtists] = useState([]);
   const [checkedGenres, setCheckedGenres] = useState([]);
   const [checkedCompanies, setCheckedCompanies] = useState([]);
 
@@ -17,17 +17,39 @@ function ProductFilters() {
     const name = event.target.name;
     const checked = event.target.checked;
     if (checked) {
-      SetCheckedArtists([...checkedArtists, name]);
+      setCheckedArtists([...checkedArtists, name]);
     } else {
-      SetCheckedArtists(checkedArtists.filter((a) => a != name));
+      setCheckedArtists(checkedArtists.filter((a) => a != name));
     }
   }
-  function onCheckedGenre(event) {}
-  function onCheckedCompany(event) {}
+  function onCheckedGenre(event) {
+    const name = event.target.name;
+    const checked = event.target.checked;
+    if (checked) {
+      setCheckedGenres([...checkedGenres, name]);
+    } else {
+      setCheckedGenres(checkedGenres.filter((a) => a != name));
+    }
+  }
+  function onCheckedCompany(event) {
+    const name = event.target.name;
+    const checked = event.target.checked;
+    if (checked) {
+      setCheckedCompanies([...checkedCompanies, name]);
+    } else {
+      setCheckedCompanies(checkedCompanies.filter((a) => a != name));
+    }
+  }
 
   useEffect(() => {
     onSetFilters({ ...filters, artists: checkedArtists });
   }, [checkedArtists]);
+  useEffect(() => {
+    onSetFilters({ ...filters, genres: checkedGenres });
+  }, [checkedGenres]);
+  useEffect(() => {
+    onSetFilters({ ...filters, companies: checkedCompanies });
+  }, [checkedCompanies]);
   useEffect(() => {
     let artistList = [];
     let genreList = [];
